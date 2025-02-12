@@ -1,18 +1,18 @@
 const mongoose = require("mongoose");
 
 const crimeSchema = new mongoose.Schema({
-  title: { type: String, required: true },
-  description: { type: String, required: true },
-  division: { type: String, required: true },
-  district: { type: String, required: true },
-  crime_time: { type: Date, required: true },
-  image: { type: String }, // URL of uploaded image
-  video: { type: String, default: null }, // URL of uploaded video
+  title: { type: String, required: false },
+  description: { type: String, required: false },
+  division: { type: String, required: false },
+  district: { type: String, required: false },
+  crime_time: { type: Date, required: false },
+  image: { type: String, required: false }, // URL of uploaded image
+  video: { type: String, required: false }, // URL of uploaded video
   post_time: { type: Date, default: Date.now },
   user_id: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
-    required: true,
+    required: false,
   },
   upvotes: { type: Number, default: 0 },
   downvotes: { type: Number, default: 0 },
