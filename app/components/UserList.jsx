@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { BadgeCheck, Ban, CircleOff, Users } from "lucide-react";
+
 import {
   Table,
   TableBody,
@@ -23,65 +24,31 @@ import {
   AvatarFallback,
   AvatarImage,
 } from "@/app/components/ui/avatar";
-
-const initialUsers = [
-  {
-    id: 1,
-    name: "John Doe",
-    email: "john@example.com",
-    phone: "+1 234-567-8901",
-    verified: true,
-    banned: false,
-    avatar: "https://api.dicebear.com/6.x/avataaars/svg?seed=John",
-  },
-  {
-    id: 2,
-    name: "Jane Smith",
-    email: "jane@example.com",
-    phone: "+1 234-567-8902",
-    verified: false,
-    banned: false,
-    avatar: "https://api.dicebear.com/6.x/avataaars/svg?seed=Jane",
-  },
-  {
-    id: 3,
-    name: "Bob Johnson",
-    email: "bob@example.com",
-    phone: "+1 234-567-8903",
-    verified: true,
-    banned: true,
-    avatar: "https://api.dicebear.com/6.x/avataaars/svg?seed=Bob",
-  },
-  {
-    id: 4,
-    name: "Alice Brown",
-    email: "alice@example.com",
-    phone: "+1 234-567-8904",
-    verified: true,
-    banned: false,
-    avatar: "https://api.dicebear.com/6.x/avataaars/svg?seed=Alice",
-  },
-  {
-    id: 5,
-    name: "Charlie Wilson",
-    email: "charlie@example.com",
-    phone: "+1 234-567-8905",
-    verified: false,
-    banned: true,
-    avatar: "https://api.dicebear.com/6.x/avataaars/svg?seed=Charlie",
-  },
-];
+import { useAdminUsers } from "@/hooks/tanstackQuery/useAdmin";
+import { User } from "lucide-react";
 
 export default function UserList() {
-  const [users, setUsers] = useState(initialUsers);
+  const { data, isLoading, isError } = useAdminUsers({ limit: 10, offset: 0 });
+
+  // Ensure `users` is an array, fallback to an empty array if undefined
+  const users = data?.users ?? [];
+
+  // Debugging: Check what data is being received
+  console.log("API Data:", data);
+
+  // Function to toggle user ban status
+  const [userList, setUserList] = useState(users);
 
   const toggleBan = (id) => {
-    setUsers(
-      users.map((user) =>
+    setUserList(
+      userList.map((user) =>
         user.id === id ? { ...user, banned: !user.banned } : user
       )
     );
   };
+
+  if (isLoading) return <p>Loading users...</p>;
+  if (isError) return <p>Error loading users.</p>;
 
   return (
     <div className="container mx-auto py-10">
@@ -105,12 +72,18 @@ export default function UserList() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {users.map((user) => (
-                  <TableRow key={user.id}>
+                {users.map((user,index) => (
+                  <TableRow key={index}>
                     <TableCell>
-                      <Avatar>
-                        <AvatarImage src={user.avatar} alt={user.name} />
-                        <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
+                      <Avatar className="w-10 h-10">
+                        <AvatarImage
+                          src={user.profile_image || "/placeholder.svg"}
+                          alt={user.email}
+                        />
+                        <AvatarFallback>
+                          <User className="w-12 h-12 text-gray-500" />{" "}
+                          {/* User Icon */}
+                        </AvatarFallback>
                       </Avatar>
                     </TableCell>
                     <TableCell className="font-medium">{user.name}</TableCell>
