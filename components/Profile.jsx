@@ -50,71 +50,73 @@ export default function Profile() {
   }
 
   return (
-    <Link
-      href={"/crime/23423"}
-      className="container w-full max-w-7xl mx-auto p-4 space-y-6"
-    >
-      {/* Profile Section - Containerized */}
-      <Card className=" mx-auto shadow-lg">
-        <CardContent className="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-6 p-6">
-          <Avatar className="w-24 h-24">
-            <AvatarImage
-              src={user.profile_image || "/placeholder.svg"}
-              alt={user.email}
-            />
-            <AvatarFallback>{user.email}</AvatarFallback>
-          </Avatar>
-          <div className="space-y-2 text-center md:text-left">
-            <h2 className="text-2xl font-bold">{user.email}</h2>
-            <p className="text-gray-500">{user.phone_number}</p>
-            <div className="flex justify-center md:justify-start space-x-2">
-              <Badge variant={user.verified ? "success" : "secondary"}>
-                {user.verified ? "Verified" : "Unverified"}
-              </Badge>
-              <Badge variant={user.banned ? "destructive" : "outline"}>
-                {user.banned ? "Banned" : "Active"}
-              </Badge>
+    <div className="container mx-auto">
+      <Link
+        href={"/crime/23423"}
+        className="container w-full max-w-7xl mx-auto p-4 space-y-6"
+      >
+        {/* Profile Section - Containerized */}
+        <Card className=" mx-auto shadow-lg">
+          <CardContent className="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-6 p-6">
+            <Avatar className="w-24 h-24">
+              <AvatarImage
+                src={user.profile_image || "/placeholder.svg"}
+                alt={user.email}
+              />
+              <AvatarFallback>{user.email}</AvatarFallback>
+            </Avatar>
+            <div className="space-y-2 text-center md:text-left">
+              <h2 className="text-2xl font-bold">{user.email}</h2>
+              <p className="text-gray-500">{user.phone_number}</p>
+              <div className="flex justify-center md:justify-start space-x-2">
+                <Badge variant={user.verified ? "success" : "secondary"}>
+                  {user.verified ? "Verified" : "Unverified"}
+                </Badge>
+                <Badge variant={user.banned ? "destructive" : "outline"}>
+                  {user.banned ? "Banned" : "Active"}
+                </Badge>
+              </div>
+              {user.bio && <p className="text-sm text-gray-600">{user.bio}</p>}
             </div>
-            {user.bio && <p className="text-sm text-gray-600">{user.bio}</p>}
+          </CardContent>
+        </Card>
+
+        {/* Crime Reports Section */}
+        <div className="space-y-4">
+          <h3 className="text-xl font-semibold text-center">Crime Reports</h3>
+
+          {/* Responsive Grid Layout */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {user.crime_reports.length > 0 ? (
+              user.crime_reports.map((report, index) => (
+                <Card key={index} className="shadow-md">
+                  <CardHeader>
+                    <CardTitle>Crime Report #{index + 1}</CardTitle>
+                    <CardDescription>
+                      Reported on: {new Date(report.date).toLocaleDateString()}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <p>{report.description}</p>
+                    {report.status && (
+                      <Badge
+                        className="mt-2"
+                        variant={
+                          report.status === "Resolved" ? "success" : "warning"
+                        }
+                      >
+                        {report.status}
+                      </Badge>
+                    )}
+                  </CardContent>
+                </Card>
+              ))
+            ) : (
+              <p className="text-gray-500">No crime reports available.</p>
+            )}
           </div>
-        </CardContent>
-      </Card>
-
-      {/* Crime Reports Section */}
-      <div className="space-y-4">
-        <h3 className="text-xl font-semibold text-center">Crime Reports</h3>
-
-        {/* Responsive Grid Layout */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {user.crime_reports.length > 0 ? (
-            user.crime_reports.map((report, index) => (
-              <Card key={index} className="shadow-md">
-                <CardHeader>
-                  <CardTitle>Crime Report #{index + 1}</CardTitle>
-                  <CardDescription>
-                    Reported on: {new Date(report.date).toLocaleDateString()}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p>{report.description}</p>
-                  {report.status && (
-                    <Badge
-                      className="mt-2"
-                      variant={
-                        report.status === "Resolved" ? "success" : "warning"
-                      }
-                    >
-                      {report.status}
-                    </Badge>
-                  )}
-                </CardContent>
-              </Card>
-            ))
-          ) : (
-            <p className="text-gray-500">No crime reports available.</p>
-          )}
         </div>
-      </div>
-    </Link>
+      </Link>
+    </div>
   );
 }
