@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -8,8 +10,56 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { loginSchema } from "@/helpers/validationSchemas/authValidation";
+import { useFormik } from "formik";
+import { signIn } from "next-auth/react";
+import { enqueueSnackbar } from "notistack";
+import { useState } from "react";
 
 export default function LoginForm() {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const { values, touched, errors, handleChange, handleSubmit } = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+    },
+    validationSchema: loginSchema,
+    onSubmit: async (values) => {
+      try {
+        const res = await signIn("credentials", {
+          email: values.email,
+          password: values.password,
+          redirect: false,
+          // callbackUrl: `${window.location.origin}/dashboard`,
+          callbackUrl: `/profile`,
+        });
+        // console.log("res = ", res);
+        // return;
+        if (res?.status != 200) {
+          enqueueSnackbar("Email or Password wrong", {
+            variant: "error",
+          });
+        }
+
+        if (res?.status === 200) {
+          enqueueSnackbar("Logged in successfully", {
+            variant: "default",
+          });
+
+          router.push("/profile");
+        }
+      } catch (error) {
+        // console.log("error = ", error);
+        enqueueSnackbar(error.message | "Something went wrong.", {
+          variant: "error",
+        });
+      } finally {
+        setIsSubmitting(false);
+      }
+    },
+  });
+
   return (
     <div className="flex items-center justify-center min-h-screen">
       <Card className="mx-auto ">
@@ -27,15 +77,31 @@ export default function LoginForm() {
                 id="email"
                 type="email"
                 placeholder="m@example.com"
-                required
+                name="email"
+                value={values.email}
+                onChange={handleChange}
+                error={errors.email}
+                touched={touched.email}
               />
             </div>
             <div className="space-y-2">
               <Label htmlFor="password">Password</Label>
-              <Input id="password" type="password" required />
+              <Input
+                id="password"
+                type="password"
+                name="password"
+                value={values.password}
+                onChange={handleChange}
+                error={errors.password}
+                touched={touched.password}
+              />
             </div>
-            <Button type="submit" className="w-full">
-              Login
+            <Button
+              disabled={isPending}
+              type="submit"
+              className="w-full disabled:opacity-50"
+            >
+              {isPending ? "Processing ..." : " Login"}
             </Button>
           </div>
         </CardContent>
