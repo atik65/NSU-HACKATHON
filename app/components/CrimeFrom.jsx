@@ -24,6 +24,7 @@ import { crimeSchema } from "@/helpers/validationSchemas/crimeValidation";
 import { useCreateCrime } from "@/hooks/tanstackQuery/useCrimes";
 import { getImgToB64 } from "@/lib/imageToBase64";
 import { useFormik } from "formik";
+import { useRouter } from "next/navigation";
 import { enqueueSnackbar } from "notistack";
 import { useForm } from "react-hook-form";
 
@@ -43,6 +44,7 @@ export default function CrimeReportForm() {
   //   const [fileError, setFileError] = (useState < string) | (null > null);
 
   const { mutateAsync, isPending } = useCreateCrime();
+  const router = useRouter();
 
   const { values, touched, handleChange, errors, setFieldValue, handleSubmit } =
     useFormik({
@@ -75,6 +77,8 @@ export default function CrimeReportForm() {
           enqueueSnackbar(res.message || "Crime reported successfully", {
             variant: "default",
           });
+
+          router.push("/");
         } catch (error) {
           console.log(error);
 
@@ -120,19 +124,6 @@ export default function CrimeReportForm() {
             <Label htmlFor="lastName">Last Name</Label>
             <Input id="lastName" placeholder="Doe" />
           </div> */}
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="des">Description</Label>
-              <Textarea
-                id="des"
-                type="text"
-                placeholder="Describe the incident"
-                name="description"
-                onChange={handleChange}
-                value={values.description}
-                // error={errors.description}
-                // touched={touched.description}
-              />
             </div>
 
             {/* division */}
@@ -238,6 +229,20 @@ export default function CrimeReportForm() {
                 // value={values.image}
                 // error={errors.image}
                 // touched={touched.image}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="des">Description</Label>
+              <Textarea
+                id="des"
+                type="text"
+                placeholder="Describe the incident"
+                name="description"
+                onChange={handleChange}
+                value={values.description}
+                // error={errors.description}
+                // touched={touched.description}
               />
             </div>
           </CardContent>

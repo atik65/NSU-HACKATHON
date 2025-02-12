@@ -48,3 +48,20 @@ export const useCreateCrime = () => {
       }),
   });
 };
+
+// get single crime
+export const useGetSingleCrime = ({ id }) => {
+  const { data: session } = useSession();
+
+  return useQuery({
+    queryKey: ["singleCrime", id],
+    queryFn: async () =>
+      await axiosRequest({
+        url: `/crime/${id}`,
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${session?.accessToken}`,
+        },
+      }),
+  });
+};
