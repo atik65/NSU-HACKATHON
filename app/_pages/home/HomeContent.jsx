@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 // import { BentoGrid, BentoGridItem } from "../ui/bento-grid-acernity";
 import {
@@ -11,8 +13,13 @@ import {
 } from "@tabler/icons-react";
 import { BentoGrid, BentoGridItem } from "@/components/ui/bento-grid";
 import Image from "next/image";
+import { useSession } from "next-auth/react";
 
 export function HomeContent() {
+  const { data: session, status } = useSession();
+
+  console.log(session);
+
   return (
     <div>
       <BentoGrid className="w-full  mx-auto ">

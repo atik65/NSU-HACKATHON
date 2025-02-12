@@ -13,11 +13,13 @@ import { Label } from "@/components/ui/label";
 import { loginSchema } from "@/helpers/validationSchemas/authValidation";
 import { useFormik } from "formik";
 import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { enqueueSnackbar } from "notistack";
 import { useState } from "react";
 
 export default function LoginForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const router = useRouter();
 
   const { values, touched, errors, handleChange, handleSubmit } = useFormik({
     initialValues: {
@@ -41,6 +43,15 @@ export default function LoginForm() {
             variant: "error",
           });
         }
+
+        console.log("res = ", res);
+
+        //         {
+        //     "error": null,
+        //     "status": 200,
+        //     "ok": true,
+        //     "url": "http://localhost:3000/profile"
+        // }
 
         if (res?.status === 200) {
           enqueueSnackbar("Logged in successfully", {
@@ -70,7 +81,7 @@ export default function LoginForm() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-3">
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
               <Input
@@ -97,13 +108,13 @@ export default function LoginForm() {
               />
             </div>
             <Button
-              disabled={isPending}
+              disabled={isSubmitting}
               type="submit"
               className="w-full disabled:opacity-50"
             >
-              {isPending ? "Processing ..." : " Login"}
+              {isSubmitting ? "Processing ..." : " Login"}
             </Button>
-          </div>
+          </form>
         </CardContent>
       </Card>
     </div>
