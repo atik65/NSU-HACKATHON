@@ -15,6 +15,8 @@ import {
 import { Badge } from "@/app/components/ui/badge";
 import Link from "next/link";
 import { useGetDivisions } from "@/hooks/tanstackQuery/useLocation";
+import { useSession } from "next-auth/react";
+import { useGetUserInfo } from "@/hooks/tanstackQuery/useAuth";
 
 // Dummy data
 const dummyData = [
@@ -51,6 +53,12 @@ const user = dummyData.length > 0 ? dummyData[0] : null;
 
 export default function Profile() {
   const { data } = useGetDivisions();
+
+  const { data: session } = useSession();
+
+  const { data: userInfo, isLoading } = useGetUserInfo();
+
+  console.log("user = ", user);
 
   if (!user) {
     return <p className="text-center text-red-500">No user data available.</p>;

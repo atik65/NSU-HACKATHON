@@ -1,7 +1,7 @@
 "use client";
 
 import axiosRequest from "@/lib/axiosRequest";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 
 // send otp
@@ -92,6 +92,24 @@ export const useOtpVerify = () => {
         url: `/verify-sms-otp/`,
         method: "POST",
         data: body,
+      }),
+  });
+};
+
+export const useGetUserInfo = () => {
+  const { data: session } = useSession();
+
+  // console.log("session form auth provider = ", session);
+
+  return useQuery({
+    queryKey: ["userinfo", session?.user?.user_id],
+    queryFn: async () =>
+      await axiosRequest({
+        url: `/profile/${session?.user?.user_id}`,
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${session?.accessToken}`,
+        },
       }),
   });
 };
