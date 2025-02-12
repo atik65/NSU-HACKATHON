@@ -1,9 +1,9 @@
-import { OTPVerification } from "@/components/OTP";
+import Profile from "@/app/components/Profile";
 
 const page = () => {
   return (
     <div>
-      <OTPVerification />
+      <Profile />
     </div>
   );
 };

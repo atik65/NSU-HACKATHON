@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 // import { BentoGrid, BentoGridItem } from "../ui/bento-grid-acernity";
 import {
@@ -9,10 +11,22 @@ import {
   IconSignature,
   IconTableColumn,
 } from "@tabler/icons-react";
-import { BentoGrid, BentoGridItem } from "@/components/ui/bento-grid";
+import { BentoGrid, BentoGridItem } from "@/app/components/ui/bento-grid";
 import Image from "next/image";
+import { useSession } from "next-auth/react";
+import { useGetCrimes } from "@/hooks/tanstackQuery/useCrimes";
 
 export function HomeContent() {
+  const { data: session, status } = useSession();
+
+  console.log(session);
+
+  const { data, isLoading } = useGetCrimes({
+    limit: 10,
+    offset: 0,
+    search: "",
+  });
+
   return (
     <div>
       <BentoGrid className="w-full  mx-auto ">

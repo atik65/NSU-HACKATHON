@@ -1,10 +1,10 @@
-import RegisterForm from "@/app/components/RegisterForm";
+import CrimeReportForm from "@/app/components/CrimeFrom";
 import React from "react";
 
 const page = () => {
   return (
     <div>
-      <RegisterForm />
+      <CrimeReportForm />
     </div>
   );
 };

@@ -1,10 +1,10 @@
-import CrimeReportForm from "@/components/CrimeFrom";
+import Profile from "@/app/components/Profile";
 import React from "react";
 
 const page = () => {
   return (
     <div>
-      <CrimeReportForm />
+      <Profile />
     </div>
   );
 };

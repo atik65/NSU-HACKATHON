@@ -1,18 +1,26 @@
 "use client";
 import React, { useState } from "react";
-import { Sidebar, SidebarBody, SidebarLink } from "@/components/ui/sidebar";
-import { LayoutDashboard, UserCog, Settings, LogOut } from "lucide-react";
+import { Sidebar, SidebarBody, SidebarLink } from "@/app/components/ui/sidebar";
+import {
+  LayoutDashboard,
+  UserCog,
+  Settings,
+  LogOut,
+  CirclePlus,
+  LockKeyhole,
+} from "lucide-react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { HomeContent } from "./HomeContent";
+import { signOut } from "next-auth/react";
 
-export function Home() {
+export function Home({ children }) {
   const links = [
     {
-      label: "Dashboard",
-      href: "#",
+      label: "Crimes",
+      href: "/",
       icon: (
         <LayoutDashboard className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
       ),
@@ -25,17 +33,17 @@ export function Home() {
       ),
     },
     {
-      label: "Settings",
-      href: "#",
+      label: "Admin",
+      href: "/admin",
       icon: (
-        <Settings className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
+        <LockKeyhole className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
       ),
     },
     {
-      label: "Logout",
-      href: "#",
+      label: "Create Crime",
+      href: "/create-crime",
       icon: (
-        <LogOut className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
+        <CirclePlus className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
       ),
     },
   ];
@@ -60,8 +68,9 @@ export function Home() {
           </div>
           <div>
             <SidebarLink
+              onClick={() => signOut()}
               link={{
-                label: "Manu Arora",
+                label: "Sign Out",
                 href: "#",
                 icon: (
                   <Image
@@ -77,7 +86,7 @@ export function Home() {
           </div>
         </SidebarBody>
       </Sidebar>
-      <Dashboard />
+      <Dashboard children={children} />
     </div>
   );
 }
@@ -118,7 +127,7 @@ export const LogoIcon = () => {
 };
 
 // Dummy dashboard component with content
-const Dashboard = () => {
+const Dashboard = ({ children }) => {
   return (
     <div className="flex flex-1">
       <div className="p-2 md:p-10 rounded-tl-2xl border border-neutral-200 dark:border-neutral-700  dark:bg-neutral-900 overflow-y-scroll gap-2 flex-1 w-full ">
@@ -146,7 +155,9 @@ const Dashboard = () => {
           ))}
         </div> */}
 
-        <HomeContent />
+        {/* <HomeContent /> */}
+
+        {children}
 
         {/* {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((item) => {
           return <div className="h-72">hello</div>;

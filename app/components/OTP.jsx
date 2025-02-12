@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@/app/components/ui/button";
 import {
   Card,
   CardContent,
@@ -8,9 +8,9 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+} from "@/app/components/ui/card";
+import { Input } from "@/app/components/ui/input";
+import { Label } from "@/app/components/ui/label";
 import { useState } from "react";
 
 export function OTPVerification() {
@@ -37,7 +37,7 @@ export function OTPVerification() {
                   pattern="\d{1}"
                   maxLength={1}
                   className="w-12 h-12 text-center text-2xl"
-                  value={data}
+                  // value={data}
                   // onChange={(e) => handleChange(e.target, index)}
                   // onFocus={(e) => e.target.select()}
                 />
