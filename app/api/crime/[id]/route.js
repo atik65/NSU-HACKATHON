@@ -61,7 +61,7 @@ export async function GET(req, { params }) {
         description: crime.description,
         division: crime.division,
         district: crime.district,
-        images: crime.images,
+        image: crime.image,
         video: crime.video,
         post_time: crime.post_time,
         crime_time: crime.crime_time,
