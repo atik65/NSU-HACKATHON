@@ -21,11 +21,15 @@ import {
 } from "@/app/components/ui/select";
 import { Textarea } from "@/app/components/ui/textarea";
 import { crimeSchema } from "@/helpers/validationSchemas/crimeValidation";
-import { useCreateCrime } from "@/hooks/tanstackQuery/useCrimes";
+import {
+  useCreateAiDescription,
+  useCreateCrime,
+} from "@/hooks/tanstackQuery/useCrimes";
 import { getImgToB64 } from "@/lib/imageToBase64";
 import { useFormik } from "formik";
 import { useRouter } from "next/navigation";
 import { enqueueSnackbar } from "notistack";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
 // {
@@ -44,7 +48,11 @@ export default function CrimeReportForm() {
   //   const [fileError, setFileError] = (useState < string) | (null > null);
 
   const { mutateAsync, isPending } = useCreateCrime();
+  const [aiDes, setAiDes] = useState("");
   const router = useRouter();
+
+  const { mutateAsync: aiDesMutateAsync, isPending: aiDesPending } =
+    useCreateAiDescription();
 
   const { values, touched, handleChange, errors, setFieldValue, handleSubmit } =
     useFormik({
@@ -91,7 +99,59 @@ export default function CrimeReportForm() {
       },
     });
 
-  console.log("values = ", values);
+  function imageToBase64(file) {
+    return new Promise((resolve, reject) => {
+      if (!(file instanceof Blob)) {
+        reject(new Error("Invalid file type"));
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = (error) => reject(error);
+    });
+  }
+
+  function getBase64Data(base64String) {
+    if (!base64String.includes(",")) {
+      console.error("Invalid Base64 format");
+      return null;
+    }
+    return base64String.split(",")[1]; // Get the part after the comma
+  }
+
+  const handleGetAiDes = async (image) => {
+    let base64Image = await imageToBase64(values?.image);
+
+    console.log("image = ", base64Image);
+    // return;
+
+    const base64Data = getBase64Data(base64Image);
+
+    const payload = {
+      image: base64Data,
+    };
+
+    try {
+      const res = await aiDesMutateAsync(payload);
+      console.log(res);
+      enqueueSnackbar(res.message || "AI description generated successfully", {
+        variant: "default",
+      });
+
+      setAiDes(res?.aiResponse);
+    } catch (error) {
+      console.log(error);
+      enqueueSnackbar(error?.error || "AI description generation failed", {
+        variant: "error",
+      });
+    }
+  };
+
+  useEffect(() => {
+    setFieldValue("description", aiDes);
+  }, [aiDes]);
 
   return (
     <>
@@ -225,6 +285,11 @@ export default function CrimeReportForm() {
                   if (file) {
                     setFieldValue("image", file);
                   }
+
+                  // call aii des func
+                  handleGetAiDes({
+                    image: event.currentTarget.files[0],
+                  });
                 }}
                 // value={values.image}
                 // error={errors.image}
@@ -241,6 +306,7 @@ export default function CrimeReportForm() {
                 name="description"
                 onChange={handleChange}
                 value={values.description}
+                rows={7}
                 // error={errors.description}
                 // touched={touched.description}
               />
@@ -248,8 +314,16 @@ export default function CrimeReportForm() {
           </CardContent>
 
           <CardFooter>
-            <Button disabled={isPending} type="submit" className="w-full">
-              {isPending ? "Please wait..." : "Report Crime"}
+            <Button
+              disabled={isPending || aiDesPending}
+              type="submit"
+              className="w-full"
+            >
+              {isPending
+                ? "Please wait..."
+                : aiDesPending
+                ? "Generating AI description..."
+                : "Submit"}
             </Button>
           </CardFooter>
         </form>

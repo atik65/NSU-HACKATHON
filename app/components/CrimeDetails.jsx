@@ -95,13 +95,23 @@ export default function DescriptionComponent() {
     <div className="w-full max-w-3xl mx-auto ">
       <Card className=" mx-auto">
         <CardHeader className="p-0">
-          <Image
-            src={"/images/crime.png"}
-            alt="Header image"
-            width={600}
-            height={300}
-            className="w-full h-[300px] object-cover rounded-t-lg"
-          />
+          {data?.image ? (
+            <Image
+              src={data?.image}
+              alt="Header image"
+              width={600}
+              height={300}
+              className="w-full h-[300px] object-cover rounded-t-lg"
+            />
+          ) : (
+            <Image
+              src={"/images/crime.png"}
+              alt="Header image"
+              width={600}
+              height={300}
+              className="w-full h-[300px] object-cover rounded-t-lg"
+            />
+          )}
         </CardHeader>
         <CardContent className="p-6">
           <h2 className="text-2xl font-bold mb-4">{data?.title}</h2>
