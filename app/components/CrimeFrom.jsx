@@ -63,6 +63,7 @@ export default function CrimeReportForm() {
           description: values.description,
           division: values.division,
           district: values.district,
+          crime_time: new Date(),
           image: base64Image,
           video: "",
         };
