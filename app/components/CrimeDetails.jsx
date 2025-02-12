@@ -75,17 +75,6 @@ export default function DescriptionComponent() {
 
   const { data, isLoading } = useGetSingleCrime({ id: params.id });
 
-  // const {
-  //   title,
-  //   description,
-  //   division,
-  //   district,
-  //   video,
-  //   post_time,
-  //   crime_time,
-  //   user_id,
-  // } = data;
-
   console.log("data = ", data);
   if (isLoading) {
     return <div>Loading...</div>;
@@ -135,18 +124,18 @@ export default function DescriptionComponent() {
             <Badge
               variant="secondary"
               className="flex items-center space-x-1 cursor-pointer hover:bg-primary hover:text-primary-foreground transition-colors"
-              onClick={() => console.log("Upvote")}
+              onClick={handleUpvote} // Trigger the upvote handler
             >
               <ArrowUp className="w-4 h-4" />
-              <span>{data?.supvotes}</span>
+              <span>{upvotes}</span> {/* Show upvotes dynamically */}
             </Badge>
             <Badge
               variant="secondary"
               className="flex items-center space-x-1 cursor-pointer hover:bg-destructive hover:text-destructive-foreground transition-colors"
-              onClick={() => console.log("Downvote")}
+              onClick={handleDownvote} // Trigger the downvote handler
             >
               <ArrowDown className="w-4 h-4" />
-              <span>{data?.downvotes}</span>
+              <span>{downvotes}</span> {/* Show downvotes dynamically */}
             </Badge>
           </div>
           <Separator className="my-6" />
