@@ -65,3 +65,15 @@ export const useGetSingleCrime = ({ id }) => {
       }),
   });
 };
+
+export const useCreateAiDescription = () => {
+  return useMutation({
+    mutationKey: "aiDes",
+    mutationFn: async (body) =>
+      await axiosRequest({
+        url: `/ai-des/`,
+        method: "POST",
+        data: body,
+      }),
+  });
+};
