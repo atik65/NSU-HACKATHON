@@ -10,7 +10,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 async function refreshAccessToken(token) {
   try {
     //refresh token API URL
-    const url = `${process.env.NEXT_PUBLIC_API_URL}/dj-rest-auth/token/refresh/`;
+    const url = `${process.env.NEXT_PUBLIC_API_URL}/refresh-token/`;
     const response = await axios.post(url, { refresh: token.refreshToken });
     const refreshedTokens = response.data;
 
@@ -19,7 +19,7 @@ async function refreshAccessToken(token) {
     if (response.status === 200) {
       return {
         ...token,
-        accessToken: refreshedTokens.access,
+        accessToken: refreshedTokens.access_token,
         // accessTokenExpires: Date.now() + 1 * 1000,
         refreshToken: refreshedTokens.refresh || token.refreshToken,
       };
@@ -69,6 +69,8 @@ export const authOptions = {
       async authorize(credentials, req) {
         const { email, password } = credentials;
 
+        console.log("email :>> ", email);
+
         // console.log("email :>> ", email);
         // console.log("password :>> ", password);
 
@@ -76,7 +78,7 @@ export const authOptions = {
           const res = await axios.post(
             `${process.env.NEXT_PUBLIC_API_URL}/login/`,
             {
-              phone_or_email: email,
+              email: email,
               password: password,
             }
           );
@@ -84,7 +86,7 @@ export const authOptions = {
 
           const user = res.data;
 
-          // console.log("user :>> ", user);
+          console.log("user :>> ", user);
 
           if (user) {
             return user;
@@ -92,8 +94,9 @@ export const authOptions = {
 
           // return null;
         } catch (err) {
-          // console.log("err in log in :>> ", err?.response);
-          return null;
+          throw new Error({
+            message: err?.response?.data?.error,
+          });
         }
       },
     }),
@@ -118,8 +121,8 @@ export const authOptions = {
       if (user && account.provider === "credentials") {
         // token = user;
         return {
-          accessToken: user?.access,
-          refreshToken: user?.refresh,
+          accessToken: user?.access_token,
+          refreshToken: user?.refresh_token,
           user: user,
         };
       }

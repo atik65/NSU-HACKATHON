@@ -2,6 +2,7 @@
 
 import { CrimeDetailsModal } from "@/app/_pages/home/CrimeDetailsModal";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
 import { useState } from "react";
 
 export const BentoGrid = ({ className, children }) => {
@@ -27,7 +28,8 @@ export const BentoGridItem = ({
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div
+    <Link
+      href={"/crime/213123"}
       onClick={() => setIsOpen(true)}
       className={cn(
         "row-span-1 rounded-xl group/bento hover:shadow-xl transition duration-200 shadow-input dark:shadow-none p-4 dark:bg-black dark:border-white/[0.2] bg-white border border-transparent justify-between flex flex-col space-y-4",
@@ -47,6 +49,6 @@ export const BentoGridItem = ({
           </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
