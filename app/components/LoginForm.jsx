@@ -1,18 +1,19 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@/app/components/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+} from "@/app/components/ui/card";
+import { Input } from "@/app/components/ui/input";
+import { Label } from "@/app/components/ui/label";
 import { loginSchema } from "@/helpers/validationSchemas/authValidation";
 import { useFormik } from "formik";
 import { signIn } from "next-auth/react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { enqueueSnackbar } from "notistack";
 import { useState } from "react";
@@ -59,7 +60,7 @@ export default function LoginForm() {
             variant: "default",
           });
 
-          router.push("/profile");
+          router.push("/");
         }
       } catch (error) {
         // console.log("error = ", error);
@@ -108,6 +109,17 @@ export default function LoginForm() {
                 touched={touched.password}
               />
             </div>
+
+            <div>
+              {/* forgot password? */}
+
+              <Link
+                className="text-sm text-center w-full"
+                href="/forgot-password"
+              >
+                Forgot password?
+              </Link>
+            </div>
             <Button
               disabled={isSubmitting}
               type="submit"
@@ -115,6 +127,15 @@ export default function LoginForm() {
             >
               {isSubmitting ? "Processing ..." : " Login"}
             </Button>
+
+            {/* don't have an account? */}
+            <p className="text-sm">
+              Don&apos;t have an account?
+              <Link className="font-bold" href="/signup">
+                {" "}
+                Register Now
+              </Link>
+            </p>
           </form>
         </CardContent>
       </Card>

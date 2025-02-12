@@ -6,10 +6,15 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
+} from "@/app/components/ui/card";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@/app/components/ui/avatar";
+import { Badge } from "@/app/components/ui/badge";
 import Link from "next/link";
+import { useGetDivisions } from "@/hooks/tanstackQuery/useLocation";
 
 // Dummy data
 const dummyData = [
@@ -45,16 +50,15 @@ const dummyData = [
 const user = dummyData.length > 0 ? dummyData[0] : null;
 
 export default function Profile() {
+  const { data } = useGetDivisions();
+
   if (!user) {
     return <p className="text-center text-red-500">No user data available.</p>;
   }
 
   return (
     <div className="container mx-auto">
-      <Link
-        href={"/crime/23423"}
-        className="container w-full max-w-7xl mx-auto p-4 space-y-6"
-      >
+      <div className="container w-full max-w-7xl mx-auto p-4 space-y-6">
         {/* Profile Section - Containerized */}
         <Card className=" mx-auto shadow-lg">
           <CardContent className="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-6 p-6">
@@ -75,6 +79,13 @@ export default function Profile() {
                 <Badge variant={user.banned ? "destructive" : "outline"}>
                   {user.banned ? "Banned" : "Active"}
                 </Badge>
+
+                {/* verify now */}
+                <Badge variant="destructive">
+                  <Link className="w-full" href="/verify-otp">
+                    Verify Now
+                  </Link>
+                </Badge>
               </div>
               {user.bio && <p className="text-sm text-gray-600">{user.bio}</p>}
             </div>
@@ -89,34 +100,37 @@ export default function Profile() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {user.crime_reports.length > 0 ? (
               user.crime_reports.map((report, index) => (
-                <Card key={index} className="shadow-md">
-                  <CardHeader>
-                    <CardTitle>Crime Report #{index + 1}</CardTitle>
-                    <CardDescription>
-                      Reported on: {new Date(report.date).toLocaleDateString()}
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <p>{report.description}</p>
-                    {report.status && (
-                      <Badge
-                        className="mt-2"
-                        variant={
-                          report.status === "Resolved" ? "success" : "warning"
-                        }
-                      >
-                        {report.status}
-                      </Badge>
-                    )}
-                  </CardContent>
-                </Card>
+                <Link key={index} href={"/crime/21231"}>
+                  <Card className="shadow-md">
+                    <CardHeader>
+                      <CardTitle>Crime Report #{index + 1}</CardTitle>
+                      <CardDescription>
+                        Reported on:{" "}
+                        {new Date(report.date).toLocaleDateString()}
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <p>{report.description}</p>
+                      {report.status && (
+                        <Badge
+                          className="mt-2"
+                          variant={
+                            report.status === "Resolved" ? "success" : "warning"
+                          }
+                        >
+                          {report.status}
+                        </Badge>
+                      )}
+                    </CardContent>
+                  </Card>
+                </Link>
               ))
             ) : (
               <p className="text-gray-500">No crime reports available.</p>
             )}
           </div>
         </div>
-      </Link>
+      </div>
     </div>
   );
 }

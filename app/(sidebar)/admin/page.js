@@ -1,4 +1,4 @@
-import UserList from "@/components/UserList";
+import UserList from "@/app/components/UserList";
 import React from "react";
 
 const page = () => {

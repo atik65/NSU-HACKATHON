@@ -1,5 +1,5 @@
 import React from "react";
-import CrimeDetails from "@/components/CrimeDetails";
+import CrimeDetails from "@/app/components/CrimeDetails";
 const page = () => {
   return (
     <div>

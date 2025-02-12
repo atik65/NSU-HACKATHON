@@ -1,7 +1,14 @@
 "use client";
 import React, { useState } from "react";
-import { Sidebar, SidebarBody, SidebarLink } from "@/components/ui/sidebar";
-import { LayoutDashboard, UserCog, Settings, LogOut } from "lucide-react";
+import { Sidebar, SidebarBody, SidebarLink } from "@/app/components/ui/sidebar";
+import {
+  LayoutDashboard,
+  UserCog,
+  Settings,
+  LogOut,
+  CirclePlus,
+  LockKeyhole,
+} from "lucide-react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import Image from "next/image";
@@ -23,6 +30,20 @@ export function Home({ children }) {
       href: "/profile",
       icon: (
         <UserCog className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
+      ),
+    },
+    {
+      label: "Admin",
+      href: "/admin",
+      icon: (
+        <LockKeyhole className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
+      ),
+    },
+    {
+      label: "Create Crime",
+      href: "/create-crime",
+      icon: (
+        <CirclePlus className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
       ),
     },
   ];

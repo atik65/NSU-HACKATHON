@@ -1,4 +1,4 @@
-import CrimeReportForm from "@/components/CrimeFrom";
+import CrimeReportForm from "@/app/components/CrimeFrom";
 import React from "react";
 
 const page = () => {
