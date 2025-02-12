@@ -52,7 +52,6 @@ export async function GET(req) {
     const sortBy = url.searchParams.get("sort_by") || "post_time";
     const searchQuery = url.searchParams.get("search_query");
 
-    let sortBy = url.searchParams.get("sort_by") || "post_time";
 
     // Prevent sorting vulnerabilities by allowing only valid fields
     const allowedSortFields = ["post_time", "title"];
