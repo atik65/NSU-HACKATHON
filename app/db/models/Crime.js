@@ -5,9 +5,9 @@ const crimeSchema = new mongoose.Schema({
   description: { type: String, required: true },
   division: { type: String, required: true },
   district: { type: String, required: true },
-  crime_time: { type: Date, required: true },
+  crime_time: { type: Date, required: false, default: Date.now },
   image: { type: String }, // URLs of uploaded images
-  video: { type: String, default: null }, // URL of uploaded video
+  video: { type: String, default: null, required: false }, // URL of uploaded video
   post_time: { type: Date, default: Date.now },
   user_id: {
     type: mongoose.Schema.Types.ObjectId,
