@@ -77,6 +77,16 @@ export async function POST(req, { params }) {
 
     const savedComment = await newComment.save();
 
+    // if (req.socket.server.io) {
+    //   const io = req.socket.server.io
+    //   io.to(crime.user_id.toString()).emit("notification", {
+    //     type: "new_comment",
+    //     message: `New comment on your post: ${crime.title}`,
+    //     crimeId: id,
+    //     commentId: savedComment._id,
+    //   })
+    // }
+
     return NextResponse.json(
       {
         comment_id: savedComment._id,
