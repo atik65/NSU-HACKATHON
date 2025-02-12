@@ -1,7 +1,7 @@
+import { getServerSession } from "next-auth/next";
 import RootProvider from "../providers/RootProvider";
 import { authOptions } from "./api/auth/[...nextauth]/route";
 import "./globals.css";
-import { getServerSession } from "next-auth/next";
 
 export const metadata = {
   title: "Reportify",
