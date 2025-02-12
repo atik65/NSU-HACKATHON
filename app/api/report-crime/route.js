@@ -54,6 +54,16 @@ export async function POST(req) {
     const { title, description, division, district, crime_time, image, video } =
       body;
 
+    console.log(
+      title,
+      description,
+      division,
+      district,
+      crime_time,
+      image,
+      video
+    );
+
     // Validate the request body
     if (!title || !description || !division || !district || !crime_time) {
       return NextResponse.json(
