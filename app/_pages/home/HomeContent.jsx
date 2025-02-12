@@ -36,6 +36,7 @@ export function HomeContent() {
       <BentoGrid className="w-full mx-auto">
         {data?.crimes?.map((crime, i) => (
           <BentoGridItem
+            id={crime._id}
             key={crime._id}
             title={crime.title}
             description={crime.description}
