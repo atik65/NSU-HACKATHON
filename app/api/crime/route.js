@@ -7,6 +7,7 @@ import { NextResponse } from "next/server";
 const ACCESS_KEY = process.env.ACCESS_TOKEN_SECRET;
 
 export async function GET(req) {
+  console.log("request", req.body);
   try {
     if (!ACCESS_KEY) {
       return NextResponse.json(
@@ -24,11 +25,8 @@ export async function GET(req) {
     }
 
     const token = authHeader.split(" ")[1];
-
-    let decoded;
-    try {
-      decoded = jwt.verify(token, ACCESS_KEY);
-    } catch (err) {
+    let decoded = jwt.verify(token, ACCESS_KEY);
+    if (!decoded) {
       return NextResponse.json(
         { error: "Invalid or expired token." },
         { status: 403 }
@@ -51,6 +49,10 @@ export async function GET(req) {
     const limit = parseInt(url.searchParams.get("limit"), 10) || 6;
     const division = url.searchParams.get("division");
     const district = url.searchParams.get("district");
+<<<<<<< HEAD
+=======
+    const sortBy = url.searchParams.get("sort_by") || "post_time";
+>>>>>>> atik
     const searchQuery = url.searchParams.get("search_query");
 
     let sortBy = url.searchParams.get("sort_by") || "post_time";
@@ -76,11 +78,15 @@ export async function GET(req) {
 
     // Fetch crimes with pagination
     const crimes = await Crime.find(query)
+<<<<<<< HEAD
       .populate({
         path: "user_id",
         model: User, // Explicitly specify the model to avoid MissingSchemaError
         select: "email phone profile_image",
       })
+=======
+      .populate("user_id", "email phone profile_image")
+>>>>>>> atik
       .sort({ [sortBy]: -1 })
       .skip(skip)
       .limit(limit);
