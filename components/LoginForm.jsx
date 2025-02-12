@@ -28,6 +28,7 @@ export default function LoginForm() {
     },
     validationSchema: loginSchema,
     onSubmit: async (values) => {
+      setIsSubmitting(true);
       try {
         const res = await signIn("credentials", {
           email: values.email,
