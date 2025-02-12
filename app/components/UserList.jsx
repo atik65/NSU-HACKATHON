@@ -51,7 +51,7 @@ export default function UserList() {
   if (isError) return <p>Error loading users.</p>;
 
   return (
-    <div className="container mx-auto py-10">
+    <div className="container max-w-7xl mx-auto py-10">
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-2xl font-bold">User Management</CardTitle>
@@ -63,7 +63,7 @@ export default function UserList() {
               <TableHeader>
                 <TableRow>
                   <TableHead className="w-[80px]">Avatar</TableHead>
-                  <TableHead>Name</TableHead>
+                  
                   <TableHead>Email</TableHead>
                   <TableHead>Phone</TableHead>
                   <TableHead>Verified</TableHead>
@@ -86,7 +86,7 @@ export default function UserList() {
                         </AvatarFallback>
                       </Avatar>
                     </TableCell>
-                    <TableCell className="font-medium">{user.name}</TableCell>
+                   
                     <TableCell>{user.email}</TableCell>
                     <TableCell>{user.phone}</TableCell>
                     <TableCell>
