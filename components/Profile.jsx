@@ -1,8 +1,15 @@
 "use client";
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
+import Link from "next/link";
 
 // Dummy data
 const dummyData = [
@@ -17,15 +24,18 @@ const dummyData = [
     crime_reports: [
       {
         date: "2023-06-15T10:30:00Z",
-        description: "Witnessed a car break-in on Main Street.Witnessed a car break-in on Main Street",
+        description:
+          "Witnessed a car break-in on Main Street.Witnessed a car break-in on Main Street",
       },
       {
         date: "2023-05-20T14:45:00Z",
-        description: "Reported graffiti in Central Park.Witnessed a car break-in on Main Street",
+        description:
+          "Reported graffiti in Central Park.Witnessed a car break-in on Main Street",
       },
       {
         date: "2023-04-10T12:20:00Z",
-        description: "Observed suspicious activity near the bank.Witnessed a car break-in on Main Street",
+        description:
+          "Observed suspicious activity near the bank.Witnessed a car break-in on Main Street",
       },
     ],
   },
@@ -40,14 +50,18 @@ export default function Profile() {
   }
 
   return (
-    <div className="container w-full max-w-7xl mx-auto p-4 space-y-6">
-      
+    <Link
+      href={"/crime/23423"}
+      className="container w-full max-w-7xl mx-auto p-4 space-y-6"
+    >
       {/* Profile Section - Containerized */}
       <Card className=" mx-auto shadow-lg">
-        
         <CardContent className="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-6 p-6">
           <Avatar className="w-24 h-24">
-            <AvatarImage src={user.profile_image || "/placeholder.svg"} alt={user.email} />
+            <AvatarImage
+              src={user.profile_image || "/placeholder.svg"}
+              alt={user.email}
+            />
             <AvatarFallback>{user.email}</AvatarFallback>
           </Avatar>
           <div className="space-y-2 text-center md:text-left">
@@ -84,7 +98,12 @@ export default function Profile() {
                 <CardContent>
                   <p>{report.description}</p>
                   {report.status && (
-                    <Badge className="mt-2" variant={report.status === "Resolved" ? "success" : "warning"}>
+                    <Badge
+                      className="mt-2"
+                      variant={
+                        report.status === "Resolved" ? "success" : "warning"
+                      }
+                    >
                       {report.status}
                     </Badge>
                   )}
@@ -96,6 +115,6 @@ export default function Profile() {
           )}
         </div>
       </div>
-    </div>
+    </Link>
   );
 }
