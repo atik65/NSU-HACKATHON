@@ -19,6 +19,11 @@ import { signOut } from "next-auth/react";
 export function Home({ children }) {
   const links = [
     {
+      label: "Reportify",
+      href: "/",
+      icon: <> </>,
+    },
+    {
       label: "Crimes",
       href: "/",
       icon: (
